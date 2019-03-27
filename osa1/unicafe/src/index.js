@@ -74,14 +74,20 @@ const App = () => {
         <Button text = {"huono"} paina = {() => klik("b")}/>
         <h1>statistiikka</h1>
         <></>
+        
         <table>
-        <Statistics text = {"hyvä"} tieto = {good} />
-        <Statistics text = {"neutraali"} tieto = {neutral} />
-        <Statistics text = {"huono"} tieto = {bad} />
-        <Statistics text = {"yhteensä"} tieto = {yht} />
-        <Statistics text = {"keskiarvo"} tieto = {keskiarvo()} />
-        <Statistics text = {"positiivisia"} tieto = {sumkeskiarvo()} />
+            <tbody>
+                <Statistics text = {"hyvä"} tieto = {good} />
+                <Statistics text = {"neutraali"} tieto = {neutral} />
+                <Statistics text = {"huono"} tieto = {bad} />
+                <Statistics text = {"yhteensä"} tieto = {yht} />
+                <Statistics text = {"keskiarvo"} tieto = {keskiarvo()} />
+                <Statistics text = {"positiivisia"} tieto = {sumkeskiarvo()} />
+            </tbody>
+        
         </table>
+       
+        
 
     </div>
   )
