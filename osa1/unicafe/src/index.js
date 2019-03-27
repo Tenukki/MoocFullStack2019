@@ -1,6 +1,29 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Button = (probs) =>{
+    return(
+        <div>
+            <button onClick = {probs.paina}>
+               {probs.text}
+            </button>
+        </div>
+    )
+  }
+
+  const Statistics = (props) => {
+        return(
+            <>
+            <p>hyvä {props.good} </p>
+            <p>neutraali {props.neutral}</p>
+            <p>huono {props.bad}</p>
+            <p>Yhteensä {props.yht}</p>
+            <p>Keskiarvo {props.keskiarvo}</p>
+            <p>positiivisia {props.sumkeski}  %</p>
+            </>
+        )
+  }
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -45,15 +68,7 @@ const App = () => {
       return summa === 0 ? 0 : summa/yht * 100
   }
 
-  const Button = (probs) =>{
-    return(
-        <div>
-            <button onClick = {probs.paina}>
-               {probs.text}
-            </button>
-        </div>
-    )
-  }
+  
 
   return (
     <div>
@@ -61,14 +76,11 @@ const App = () => {
         <Button text = {"hyvä"} paina = {() => klik("g")}/>
         <Button text = {"neutraali"} paina = {() =>klik("n")}/>
         <Button text = {"huono"} paina = {() => klik("b")}/>
-      <h1>statistiikka</h1>
-        <p>hyvä {good} </p>
-        <p>neutraali {neutral}</p>
-        <p>huono {bad}</p>
-        <p>Yhteensä {yht}</p>
-        <p>Keskiarvo {keskiarvo()}</p>
-        <p>positiivisia {sumkeskiarvo()}  %</p>
-      
+        <h1>statistiikka</h1>
+        <Statistics good = {good} neutral = {neutral} 
+        bad = {bad} yht = {yht} keskiarvo = {keskiarvo()} 
+        sumkeski = {sumkeskiarvo()}
+         />
     </div>
   )
 }
