@@ -2,34 +2,39 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 const App = () => {
-    const course = 'Half Stack -sovelluskehitys'
-    const part1 = {
-      name: 'Reactin perusteet',
-      exercises: 10
-    }
-    const part2 = {
-      name: 'Tiedonvälitys propseilla',
-      exercises: 7
-    }
-    const part3 = {
-      name: 'Komponenttien tila',
-      exercises: 14
-    }
+  const course = {
+    name: 'Half Stack -sovelluskehitys',
+    parts: [
+      {
+        name: 'Reactin perusteet',
+        exercises: 10
+      },
+      {
+        name: 'Tiedonvälitys propseilla',
+        exercises: 7
+      },
+      {
+        name: 'Komponenttien tila',
+        exercises: 14
+      }
+    ]
+  }
 
  const Header = (probs) =>{
     return(
         <div>
-            <h1>{probs.nimi}</h1>
+            <h1>{probs.nimi.name}</h1>
         </div>
     )
  }
 
  const Content = (probs) =>{
+   const lista = probs.parts
     return(
         <div>
-            <Part nimi = {probs.nimi1} maara = {probs.maara1}/>
-            <Part nimi = {probs.nimi2} maara = {probs.maara2}/>
-            <Part nimi = {probs.nimi3} maara = {probs.maara3}/>
+            <Part nimi = {lista.parts[0].name} maara = {lista.parts[0].exercises}/>
+            <Part nimi = {lista.parts[1].name} maara = {lista.parts[1].exercises}/>
+            <Part nimi = {lista.parts[2].name} maara = {lista.parts[2].exercises}/>
         </div>
     )
  }
@@ -43,9 +48,15 @@ const App = () => {
  }
 
  const Total = (probs) =>{
+   let a = 0;
+   const lista = probs.parts.parts
+   lista.forEach(element => {
+     a += element.exercises
+   });
+   
     return(
         <div>
-            <p>Yhteensä {probs.summa} tehtävää</p>
+            <p>Yhteensä {a} tehtävää</p>
         </div>
     )
  }
@@ -54,8 +65,8 @@ const App = () => {
   return (
     <div>
       <Header nimi = {course}/>
-      <Content nimi1 = {part1.name} maara1 = {part1.exercises} nimi2 = {part2.name} maara2 = {part2.exercises} nimi3 = {part3.name} maara3 = {part3.exercises}/>
-      <Total summa = {part1.exercises + part2.exercises + part3.exercises}/>
+      <Content parts =  {course}/>
+      <Total parts = {course}/>
     </div>
   )
 }
