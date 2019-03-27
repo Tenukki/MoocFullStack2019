@@ -12,16 +12,13 @@ const Button = (probs) =>{
   }
 
   const Statistics = (props) => {
-        return(
-            <>
-            <p>hyvä {props.good} </p>
-            <p>neutraali {props.neutral}</p>
-            <p>huono {props.bad}</p>
-            <p>Yhteensä {props.yht}</p>
-            <p>Keskiarvo {props.keskiarvo}</p>
-            <p>positiivisia {props.sumkeski}  %</p>
-            </>
+        return (
+            <tr>
+                <td>{props.text}</td>
+                <td>{props.tieto}</td>
+            </tr>
         )
+
   }
 
 const App = () => {
@@ -72,15 +69,20 @@ const App = () => {
 
   return (
     <div>
-        <h1>anna palautetta</h1>
         <Button text = {"hyvä"} paina = {() => klik("g")}/>
         <Button text = {"neutraali"} paina = {() =>klik("n")}/>
         <Button text = {"huono"} paina = {() => klik("b")}/>
         <h1>statistiikka</h1>
-        <Statistics good = {good} neutral = {neutral} 
-        bad = {bad} yht = {yht} keskiarvo = {keskiarvo()} 
-        sumkeski = {sumkeskiarvo()}
-         />
+        <></>
+        <table>
+        <Statistics text = {"hyvä"} tieto = {good} />
+        <Statistics text = {"neutraali"} tieto = {neutral} />
+        <Statistics text = {"huono"} tieto = {bad} />
+        <Statistics text = {"yhteensä"} tieto = {yht} />
+        <Statistics text = {"keskiarvo"} tieto = {keskiarvo()} />
+        <Statistics text = {"positiivisia"} tieto = {sumkeskiarvo()} />
+        </table>
+
     </div>
   )
 }
