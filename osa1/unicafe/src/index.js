@@ -11,6 +11,8 @@ const Button = (probs) =>{
     )
   }
 
+ 
+
   const Statistics = (props) => {
         return (
             <tr>
@@ -30,42 +32,39 @@ const App = () => {
   const [yht, setYht] = useState(0)
   const [sumKeski, setSumKeski] = useState([])
 
-
   const klik = (a) =>{
-      setYht(yht + 1)
-      if(a === "g"){
-        setGood(good + 1)
-        setKeski(keski.concat(1))
-        setSumKeski(sumKeski.concat(1))
-      } 
-      else if(a === "n"){
-        setNeutral(1+neutral)
-        setKeski(keski.concat(0))
-      }else if(a === "b"){
-        setBad(1+bad)
-        setKeski(keski.concat(-1))
-      }
-  }
+    setYht(yht + 1)
+    if(a === "g"){
+      setGood(good + 1)
+      setKeski(keski.concat(1))
+      setSumKeski(sumKeski.concat(1))
+    } 
+    else if(a === "n"){
+      setNeutral(1+neutral)
+      setKeski(keski.concat(0))
+    }else if(a === "b"){
+      setBad(1+bad)
+      setKeski(keski.concat(-1))
+    }
+}
 
-  const keskiarvo = () => {
-    let summa = 0
-    keski.forEach(element => {
-        summa += element
-      });
+const keskiarvo = () => {
+  let summa = 0
+  keski.forEach(element => {
+      summa += element
+    });
 
-      return summa === 0 ? 0 : summa/yht 
-  }
+    return summa === 0 ? 0 : summa/yht 
+}
 
-  const sumkeskiarvo = () => {
-    let summa = 0
-    sumKeski.forEach(element => {
-        summa += element
-      });
+const sumkeskiarvo = () => {
+  let summa = 0
+  sumKeski.forEach(element => {
+      summa += element
+    });
 
-      return summa === 0 ? 0 : summa/yht * 100
-  }
-
-  
+    return summa === 0 ? 0 : summa/yht * 100
+}
 
   return (
     <div>
