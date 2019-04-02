@@ -9,6 +9,36 @@ const Note = (props) => {
   )
 }
 
+const Filter = (props) => {
+  return (
+    <form>
+        <div>
+          rajaa näytettäviä<input value = {props.newRaja} onChange = {props.handleRajaChange}/>
+        </div>
+      </form>
+  )
+}
+
+const PersonForm = (props) => {
+  return (
+    <form onSubmit = {props.addName}>
+        <div>
+          nimi: <input value = {props.newName} onChange = {props.handleNameChange}/>
+        </div>
+        <div>numero: <input value = {props.newPuh} onChange = {props.handlePuhChange}/></div>
+        <div>
+          <button type="submit">lisää</button>
+        </div>
+      </form>
+  )
+}
+
+const Numbers = (props) => {
+  return props.rivit
+}
+
+
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456' },
@@ -68,26 +98,16 @@ const App = () => {
   }
 
 
+
   return (
     <div>
       <h2>Puhelinluettelo</h2>
-      <form>
-        <div>
-          rajaa näytettäviä<input value = {newRaja} onChange = {handleRajaChange}/>
-        </div>
-      </form>
+      <Filter newRaja = {newRaja} handleRajaChange = {handleRajaChange}/>
       <h2>Lisää uusi</h2>
-      <form onSubmit = {addName}>
-        <div>
-          nimi: <input value = {newName} onChange = {handleNameChange}/>
-        </div>
-        <div>numero: <input value = {newPuh} onChange = {handlePuhChange}/></div>
-        <div>
-          <button type="submit">lisää</button>
-        </div>
-      </form>
+      <PersonForm addName = {addName} newName = {newName} handleNameChange = {handleNameChange}
+      newPuh = {newPuh} handlePuhChange = {handlePuhChange}/>
       <h2>Numerot</h2>
-      {rivit()}
+      <Numbers rivit = {rivit()}/>
     </div>
   )
 
