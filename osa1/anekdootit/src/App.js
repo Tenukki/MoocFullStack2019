@@ -14,9 +14,8 @@ const Anekdootti = ({teksti, eventKlikkaus, aania, vote}) => {
 
 const MostVoted = (props) => {
  
-  const kopio = [...props.aanetLista]
-  console.log("koipio" + kopio)
-  let indeksi = kopio.indexOf(Math.max(kopio))
+  let indeksi = props.aanetLista.indexOf(Math.max(...props.aanetLista))
+  console.log(indeksi)
   return(
     <>
       <p>{props.anekdootit[indeksi]}</p>
@@ -46,7 +45,7 @@ const App = () => {
     console.log(taulukko)
     console.log(taulukko[selected])
 
-    const uusiTaul = {...taulukko}
+    const uusiTaul = [...taulukko]
     uusiTaul[selected] += 1;
     setTaulukko(uusiTaul)
 
