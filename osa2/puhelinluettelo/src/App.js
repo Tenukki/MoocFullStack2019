@@ -1,16 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import noteService from './connect'
+import './index'
 
 const Note = (props) => {
   return (
     <>
-      <p>{props.nimi} {props.puh}
+      <p className = 'note'>{props.nimi} {props.puh}
        <button onClick = {props.Poistaklikki}>poista</button>
       </p>
     </>
   )
 }
 
+const InfoMessage = ({teksti}) => {
+  if(teksti === null){
+    return (
+      <>
+      </>
+    )
+  }else{
+    return (
+      <h1 className = 'virhe'>{teksti}</h1>
+    )
+  }
+  
+  
+}
 const Filter = (props) => {
   return (
     <form>
@@ -46,6 +61,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newPuh, setNewPuh ] = useState('')
   const [ newRaja, setNewRaja ] = useState('')
+  const [virhe, setVirhe ] = useState(null)
 
   useEffect(() => {
     noteService
@@ -68,6 +84,12 @@ const App = () => {
         })
 
       })
+      setVirhe(
+        `Henkilö ${newName} poistettiin tietokannasta`
+      )
+      setTimeout(() => {
+        setVirhe(null)
+      }, 5000)
       
     }
     
@@ -116,6 +138,7 @@ const App = () => {
         name : newName,
         number : newPuh
       }
+
       noteService
       .create(noteObject)
       .then(response => {
@@ -123,6 +146,15 @@ const App = () => {
         setNewName('')
         setNewPuh("")
         console.log("Menikö se sinne")
+        
+        setVirhe(
+          `Henkilö '${newName}' lisättiin palvelimelle`
+        )
+        setTimeout(() => {
+          setVirhe(null)
+        }, 5000)
+
+
       })
     }else{
       const noteObject = {
@@ -136,6 +168,12 @@ const App = () => {
             setPersons(asia)
           })
         })
+        setVirhe(
+          `Henkilö '${newName}' korvattiin palvelimella`
+        )
+        setTimeout(() => {
+          setVirhe(null)
+        }, 5000)
       }else{
         setNewName("")
         setNewPuh("")
@@ -152,6 +190,7 @@ const App = () => {
   return (
     <div>
       <h2>Puhelinluettelo</h2>
+      <InfoMessage teksti = {virhe}/>
       <Filter newRaja = {newRaja} handleRajaChange = {handleRajaChange}/>
       <h2>Lisää uusi</h2>
       <PersonForm addName = {addName} newName = {newName} handleNameChange = {handleNameChange}
