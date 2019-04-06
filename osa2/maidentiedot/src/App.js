@@ -1,10 +1,27 @@
 import React, { Component,useState,useEffect } from 'react';
 import Connect from './connect'
+import Axios from 'axios';
 
+/*
+
+Axios.get(`http://api.apixu.com/v1/current.json?key=47a729f6a11d4850982101236190604&q=${taul[0].name}?`).then(response => {
+          console.log(response.data.location.country)
+          setSaa(response.data)
+          
+        })
+
+
+        h1>Weather in Helsinki</h1>
+      <p>temperature: {}</p>
+      <img src={saaTaul[0].current.condition.icon} alt="kuva"/>
+      <p>wind: </p>
+
+        */
 
 
 const Country = (props) => {
   const maaObject = [...props.taulukko]
+  const saaTaul = [...props.saa] 
   return (
     <>
       <h1>{maaObject[0].name}</h1>
@@ -33,7 +50,8 @@ const Print = ({maa}) => {
 const App = () => {
   const [name, setName] = useState("");
   const [maat, setMaat] = useState([])
-  
+  const [saa, setSaa] = useState([])
+   
   console.log(maat)
   useEffect(() => {
     Connect
@@ -42,6 +60,7 @@ const App = () => {
         console.log('promise fulfilled')
         setMaat(objects)
       })
+      
   }, [])
   
   const setSearch = (event) => {
@@ -58,9 +77,9 @@ const App = () => {
           <p>Too many matches, specify another filter</p>
         )
       }else if(taul.length === 1){
-        //tässä vika????
+        console.log("taulun nimi " + taul[0].name)
         return(
-        <Country taulukko={taul}/>
+          <Country taulukko={taul} saa = {saa}/>
         )
       }else{
         return (
