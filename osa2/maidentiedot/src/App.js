@@ -18,30 +18,44 @@ Axios.get(`http://api.apixu.com/v1/current.json?key=47a729f6a11d4850982101236190
 
         */
 
-
+       
 const Country = (props) => {
   const maaObject = [...props.taulukko]
-  const saaTaul = [...props.saa] 
-  return (
-    <>
-      <h1>{maaObject[0].name}</h1>
-      <p>capital {maaObject[0].capital}</p>
-      <p>population {maaObject[0].population}</p>
-      <h2>languages</h2>
-      <div>
-        <ul>
-          {maaObject[0].languages.map(kieli => <li key = {kieli.iso639_1}>{kieli.name}</li>)}
-        </ul>
-      </div>
-      <img src={maaObject[0].flag} alt="kuva"/>
-    </>
-  )
-}
+  const [saa,setSaa] = useState([])
+  /*
+  useEffect(() => {
+    Axios.get(`http://api.apixu.com/v1/current.json?key=47a729f6a11d4850982101236190604&q=${maaObject[0].name}?`).then(response => {
+      console.log("Nyt tuli data")
+      console.log(response.data.location.country)
+      console.log(response.data)
+      setSaa(response.data)
+    })
+  }, [])
+*/
+    console.log("sää",saa)
+    return (
+      <>
+        <h1>{maaObject[0].name}</h1>
+        <p>capital {maaObject[0].capital}</p>
+        <p>population {maaObject[0].population}</p>
+        <h2>languages</h2>
+        <div>
+          <ul>
+            {maaObject[0].languages.map(kieli => <li key = {kieli.iso639_1}>{kieli.name}</li>)}
+          </ul>
+        </div>
+        <img src={maaObject[0].flag} alt="kuva"/>
+        
+
+      </>
+    )
+  }
 
 
-const Print = ({maa}) => {
+
+const Print = ({maa,nappi}) => {
   return (maa.map(asia => {
-    return <p key = {asia.name}>{asia.name}</p>
+    return  <p key = {asia.name}>{asia.name}</p> 
   }))
 }
 
@@ -50,7 +64,6 @@ const Print = ({maa}) => {
 const App = () => {
   const [name, setName] = useState("");
   const [maat, setMaat] = useState([])
-  const [saa, setSaa] = useState([])
    
   console.log(maat)
   useEffect(() => {
@@ -79,7 +92,7 @@ const App = () => {
       }else if(taul.length === 1){
         console.log("taulun nimi " + taul[0].name)
         return(
-          <Country taulukko={taul} saa = {saa}/>
+          <Country taulukko={taul}/>
         )
       }else{
         return (
