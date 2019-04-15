@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react'
 import noteService from './connect'
 import './index'
 
-
-
-
 const Note = (props) => {
   return (
     <>
@@ -145,7 +142,9 @@ const App = () => {
       noteService
       .create(noteObject)
       .then(response => {
-        setPersons(persons.concat(response))
+        console.log("palautus"+JSON.stringify(response))
+        //asettaa uuden datan person tauluun
+        setPersons(response)
         setNewName('')
         setNewPuh("")
         console.log("Menikö se sinne")
@@ -187,9 +186,6 @@ const App = () => {
   }
 
   
-
-
-
   return (
     <div>
       <h2>Puhelinluettelo</h2>

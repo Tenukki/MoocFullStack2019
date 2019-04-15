@@ -2,7 +2,9 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 var morgan = require('morgan')
+const cors = require('cors')
 
+app.use(cors())
 app.use(bodyParser.json())
 
 
@@ -34,20 +36,21 @@ let persons =  [
     res.send('')
   })
   
+  //toimii
   app.get('/api/persons', (req, res) => {
     res.json(persons)
   })
 
+  //toimii
   app.get('/api/info', (req, res) => {
     res.send(
         `<p>Puhelinluettelossa ${persons.length} henkilön tiedot<p/>`+
         `<p>${new Date()}<p/>`
-        
-        
     )
     
   })
 
+  
   app.get('/api/persons/:id', (request, response) => {
     const id = request.params.id
     const person = persons.find(persons => {
@@ -63,7 +66,7 @@ let persons =  [
 
   app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id);
-    person = persons.filter(person => person.id !== id);
+    persons = persons.filter(person => person.id !== id);
     response.status(204).end();
   });
 
@@ -74,28 +77,34 @@ let persons =  [
   
   app.post('/api/persons', (request, response) => {
     const body = request.body
-  
+    console.log("objection nimi " + body.name)
+    console.log("obkection puh " + body.number)
+    
+    
     if (!body.name || !body.number) {
       return response.status(400).json({ 
         error: 'nimi tai numero puuttuu' 
       })
     }
-
-    totuus = persons.find(asia => asia.name === body.name)
-
+    console.log("nyt ollaan täällä")
+    let totuus = persons.find(henkilo => henkilo.name.toLocaleLowerCase() === body.name.toLocaleLowerCase())
+    console.log("löytyykö nimi tietokannasta " + totuus)
     if(totuus){
         return response.status(400).json({ 
             error: 'name must be unique' 
         })
     }
-  
+    
     const perss = {
       name: body.name,
       number: body.number,
-      id: generateId(),
+      id: generateId()
     }
-    person = persons.concat(perss)
-    response.json(person)
+
+    console.log("henkilo",perss)
+    persons.concat(...{perss})
+    console.log(persons.length)
+    response.json(persons)
   })
   
   const PORT = process.env.PORT || 3001
