@@ -3,7 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 var morgan = require('morgan')
 const cors = require('cors')
-
+app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 
@@ -87,7 +87,9 @@ let persons =  [
       })
     }
     console.log("nyt ollaan täällä")
-    let totuus = persons.find(henkilo => henkilo.name.toLocaleLowerCase() === body.name.toLocaleLowerCase())
+
+    let totuus = persons.find(henkilo => henkilo.name == body.name)
+
     console.log("löytyykö nimi tietokannasta " + totuus)
     if(totuus){
         return response.status(400).json({ 
@@ -100,10 +102,8 @@ let persons =  [
       number: body.number,
       id: generateId()
     }
-
-    console.log("henkilo",perss)
-    persons.concat(...{perss})
-    console.log(persons.length)
+    
+    persons.push(perss)
     response.json(persons)
   })
   
