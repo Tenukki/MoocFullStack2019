@@ -96,7 +96,7 @@ const App = () => {
   }
   
   const rivit = () => {
-    console.log("taulukko " + persons)
+    console.log(persons)
     return persons.filter(sana => sana.name.includes(newRaja)).map(element =>
         <Note nimi = {element.name} puh = {element.number} key = {element.id} 
         Poistaklikki = {() => poista(element)}
@@ -124,6 +124,7 @@ const App = () => {
   
   const addName = (event) => {
     event.preventDefault()
+    //Tarkistaaa onko nimi listalla
     let a = false;
     let id = null;
     persons.forEach(element =>{
@@ -148,15 +149,12 @@ const App = () => {
         setNewName('')
         setNewPuh("")
         console.log("Menikö se sinne")
-        
         setVirhe(
           `Henkilö '${newName}' lisättiin palvelimelle`
         )
         setTimeout(() => {
           setVirhe(null)
         }, 5000)
-
-
       })
     }else{
       const noteObject = {

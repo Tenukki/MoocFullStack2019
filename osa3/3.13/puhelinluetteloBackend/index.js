@@ -34,17 +34,20 @@ let persons =  [
     }
   ]
 
-  app.use(morgan(':method :url :status :res[content-length] - :response-time ms ' + JSON.stringify(persons)))
+  //app.use(morgan(':method :url :status :res[content-length] - :response-time ms ' + JSON.stringify(persons)))
   app.get('/', (req, res) => {
     res.send('')
   })
   
+  //toimii
   app.get('/api/persons', (req, res) => {
     Person.find({}).then(henkilo => {
+      persons = henkilo;
       res.json(henkilo.map(person => person.toJSON()))
     })
   })
 
+  //toimii
   app.get('/api/info', (req, res) => {
     Person.find({}).then(henkilo => {
       console.log(henkilo.length)
@@ -55,7 +58,7 @@ let persons =  [
     })
   })
 
-  
+  //toimii
   app.get('/api/persons/:id', (request, response) => {
     Person.findById(request.params.id).then(henkilo => {
       response.json(henkilo.toJSON())
@@ -72,37 +75,22 @@ let persons =  [
     return Math.random() * 100000000000
   }
 
-  
+  //ei toimi
   app.post('/api/persons', (request, response) => {
     const body = request.body
-    console.log("objection nimi " + body.name)
-    console.log("obkection puh " + body.number)
     
-    
-    if (!body.name || !body.number) {
-      return response.status(400).json({ 
-        error: 'nimi tai numero puuttuu' 
-      })
+    if (body.name === undefined) {
+      return response.status(400).json({ error: 'content missing' })
     }
-    console.log("nyt ollaan täällä")
 
-    let totuus = persons.find(henkilo => henkilo.name == body.name)
-
-    console.log("löytyykö nimi tietokannasta " + totuus)
-    if(totuus){
-        return response.status(400).json({ 
-            error: 'name must be unique' 
-        })
-    }
-    
-    const perss = {
+    const person = new Person({
       name: body.name,
-      number: body.number,
-      id: generateId()
-    }
-    
-    persons.push(perss)
-    response.json(persons)
+      number: body.number
+    })
+
+    person.save().then(savedPerson => {
+      response.json(savedPerson.toJSON())
+    })
   })
   
 

@@ -13,9 +13,8 @@ console.log('error connecting to MongoDB:', error.message)
 })
   
 const personSchema = new mongoose.Schema({
-nimip: String,
-puhp: String
-
+    name: String,
+    number: String
 })
   
 personSchema.set('toJSON', {
@@ -26,4 +25,4 @@ personSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('Person',personSchema)
+module.exports = mongoose.model('Person', personSchema)
