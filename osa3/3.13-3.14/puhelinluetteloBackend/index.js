@@ -34,7 +34,7 @@ let persons =  [
     }
   ]
 
-  //app.use(morgan(':method :url :status :res[content-length] - :response-time ms ' + JSON.stringify(persons)))
+  app.use(morgan(':method :url :status :res[content-length] - :response-time ms ' + JSON.stringify(persons)))
   app.get('/', (req, res) => {
     res.send('')
   })
@@ -66,16 +66,18 @@ let persons =  [
   })
 
   app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id);
-    persons = persons.filter(person => person.id !== id);
-    response.status(204).end();
+    Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
   });
 
   const generateId = () => {
     return Math.random() * 100000000000
   }
 
-  //ei toimi
+  //toimii
   app.post('/api/persons', (request, response) => {
     const body = request.body
     
@@ -91,6 +93,24 @@ let persons =  [
     person.save().then(savedPerson => {
       response.json(savedPerson.toJSON())
     })
+  })
+
+  //
+  app.put('/api/persons/:id', (request, response, next) => {
+    const body = request.body
+  
+    const person = {
+      name: body.name,
+      number: body.number,
+    }
+    console.log(person)
+    Person.findByIdAndUpdate(request.params.id, person, { new: true })
+      .then(updatePerson => {
+        console.log("mitä plauttaa")
+        console.log(updatePerson.toJSON())
+        response.json(updatePerson.toJSON())
+      })
+      .catch(error => next(error))
   })
   
 

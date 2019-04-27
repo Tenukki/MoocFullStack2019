@@ -50,7 +50,7 @@ let persons =  [
     
   })
 
-  
+  //toimii
   app.get('/api/persons/:id', (request, response) => {
     const id = request.params.id
     const person = persons.find(persons => {
@@ -63,18 +63,19 @@ let persons =  [
       }
     
   })
-
+  //toimii
   app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id);
     persons = persons.filter(person => person.id !== id);
     response.status(204).end();
   });
 
+
   const generateId = () => {
     return Math.random() * 100000000000
   }
 
-  
+  //Toimii
   app.post('/api/persons', (request, response) => {
     const body = request.body
     console.log("objection nimi " + body.name)
@@ -102,9 +103,8 @@ let persons =  [
       number: body.number,
       id: generateId()
     }
-    
     persons.push(perss)
-    response.json(persons)
+    response.json(perss)
   })
   
   const PORT = process.env.PORT || 3001

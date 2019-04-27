@@ -135,6 +135,7 @@ const App = () => {
     })
 
     if(a === false){
+
       const noteObject = {
         name : newName,
         number : newPuh
@@ -144,8 +145,13 @@ const App = () => {
       .create(noteObject)
       .then(response => {
         console.log("palautus"+JSON.stringify(response))
+
         //asettaa uuden datan person tauluun
-        setPersons(response)
+        const list = [...persons]
+        list.push(response)
+        console.log("Asetetaan uusi arvo listaan")
+        console.log(list)
+        setPersons(list)
         setNewName('')
         setNewPuh("")
         console.log("Menikö se sinne")
@@ -156,6 +162,7 @@ const App = () => {
           setVirhe(null)
         }, 5000)
       })
+
     }else{
       const noteObject = {
         name : newName,
@@ -163,9 +170,11 @@ const App = () => {
       }
       let arvo = window.confirm(`${newName} on jo luettelossa korvataanko uudella?`)
       if(arvo){
+        //updatee tietyn tiedon
         noteService.update(id, noteObject).then(asia => {
-          noteService.getAll().then(asia => {
-            setPersons(asia)
+          //hakee uudelleen määritellyt tiedot
+          noteService.getAll().then(allPerson => {
+            setPersons(allPerson)
           })
         })
         setVirhe(
