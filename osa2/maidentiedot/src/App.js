@@ -21,18 +21,7 @@ Axios.get(`http://api.apixu.com/v1/current.json?key=47a729f6a11d4850982101236190
        
 const Country = (props) => {
   const maaObject = [...props.taulukko]
-  const [saa,setSaa] = useState([])
-  /*
-  useEffect(() => {
-    Axios.get(`http://api.apixu.com/v1/current.json?key=47a729f6a11d4850982101236190604&q=${maaObject[0].name}?`).then(response => {
-      console.log("Nyt tuli data")
-      console.log(response.data.location.country)
-      console.log(response.data)
-      setSaa(response.data)
-    })
-  }, [])
-*/
-    console.log("sää",saa)
+
     return (
       <>
         <h1>{maaObject[0].name}</h1>
@@ -57,6 +46,22 @@ const Print = ({maa,nappi}) => {
   return (maa.map(asia => {
     return  <p key = {asia.name}>{asia.name}</p> 
   }))
+}
+
+
+
+const butt = (object) => {
+  console.log(object)
+}
+
+
+const CountryButtonComp = ({name,buttonClick}) => {
+    return (
+      <>
+      <span>{name}</span>
+      <button onClick={buttonClick}>show</button>
+      </>
+    )
 }
 
 

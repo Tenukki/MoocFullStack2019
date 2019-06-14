@@ -161,6 +161,13 @@ const App = () => {
         setTimeout(() => {
           setVirhe(null)
         }, 5000)
+      }).catch(error => {
+        setVirhe(
+          `${error.response.data.error}`
+        )
+        setTimeout(() => {
+          setVirhe(null)
+        }, 5000)
       })
 
     }else{
