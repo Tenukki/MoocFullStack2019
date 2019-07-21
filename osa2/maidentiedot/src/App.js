@@ -16,12 +16,9 @@ Axios.get(`http://api.apixu.com/v1/current.json?key=47a729f6a11d4850982101236190
       <img src={saaTaul[0].current.condition.icon} alt="kuva"/>
       <p>wind: </p>
 
-        */
-
-       
+        */       
 const Country = (props) => {
   const maaObject = [...props.taulukko]
-
     return (
       <>
         <h1>{maaObject[0].name}</h1>
@@ -34,37 +31,9 @@ const Country = (props) => {
           </ul>
         </div>
         <img src={maaObject[0].flag} alt="kuva"/>
-        
-
       </>
     )
   }
-
-
-
-const Print = ({maa,nappi}) => {
-  return (maa.map(asia => {
-    return  <p key = {asia.name}>{asia.name}</p> 
-  }))
-}
-
-
-
-const butt = (object) => {
-  console.log(object)
-}
-
-
-const CountryButtonComp = ({name,buttonClick}) => {
-    return (
-      <>
-      <span>{name}</span>
-      <button onClick={buttonClick}>show</button>
-      </>
-    )
-}
-
-
 
 const App = () => {
   const [name, setName] = useState("");
@@ -82,7 +51,7 @@ const App = () => {
   }, [])
   
   const setSearch = (event) => {
-    console.log(name)
+    console.log("tekstikentän teksti",name)
     setName(event.target.value)
   }
 
@@ -94,20 +63,40 @@ const App = () => {
         return(
           <p>Too many matches, specify another filter</p>
         )
-      }else if(taul.length === 1){
-        console.log("taulun nimi " + taul[0].name)
-        return(
-          <Country taulukko={taul}/>
-        )
       }else{
         return (
           <>
-            <Print maa = {taul}/>
+            <PrintCountrieName maa = {taul}/>
           </>
         )
       }
     }
 
+  const testi = (maa) =>{
+    console.log(maa.name)
+    setName(maa.name)
+  }
+
+  const PrintCountrieName = ({maa}) => {
+    const countrie = [...maa]
+    if(maa.length === 1){
+      return (
+        <>
+          <Country taulukko = {countrie}/>
+        </>
+      )
+    }else{
+      return (maa.map(asia => {
+        console.log(asia)
+        return  (
+          <>
+            <p key = {asia.name}>{asia.name} <button onClick={()=>testi(asia)}>Show</button></p> 
+          </>
+        )
+        
+      }))
+    }
+  }
 
   return (
     <div>
