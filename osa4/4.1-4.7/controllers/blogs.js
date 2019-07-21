@@ -1,25 +1,5 @@
 const blogsRouter = require('express').Router()
 const Blog = require("../models/blog")
-/*
-blogsRouter.get('/', (request, response) => {
-    Blog
-      .find({})
-      .then(blogs => {
-        response.json(blogs)
-      })
-  })
-*/
-/*
-blogsRouter.post('/', (request, response) => {
-  const blog = new Blog(request.body)
-
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
-})
-*/
 
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({})
@@ -30,7 +10,7 @@ blogsRouter.delete('/:id', async (request, response,next) => {
     const r = await Blog.findById(request.params.id)
     console.log(r)
     if(!r){
-      response.status(404).end()
+      response.status(404).json({error: "id couldn't be found"}).end()
     }else{
       try {
         await Blog.findByIdAndDelete(request.params.id)
@@ -38,9 +18,26 @@ blogsRouter.delete('/:id', async (request, response,next) => {
       } catch (error) {
         next(error)
       }
-      
     }
 });
+
+blogsRouter.put('/:id', async (req,res,next) => {
+    const body = req.body
+    const newBlog = {
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes
+    }
+    try {
+      await Blog.findByIdAndUpdate(req.params.id,newBlog,{new: true})
+      res.status(200).json(newBlog).end()
+    } catch (error) {
+      res.status(400).json({error: "id could not found"})
+      next(error)
+    }
+    
+})
 
 blogsRouter.post('/', async (request, response) => {
   
@@ -58,12 +55,10 @@ blogsRouter.post('/', async (request, response) => {
             likes: 0
           }
           console.log(uusi)
-
           const newBlog = new Blog(uusi)
-          newBlog.save()
-          response.json(uusi)
+          await newBlog.save()
+          response.json(newBlog.toJSON())
           }else{
-              console.log("täällä jossa on likes")
               const blog = new Blog(request.body)
               const savedblog = await blog.save()
               response.json(savedblog.toJSON())

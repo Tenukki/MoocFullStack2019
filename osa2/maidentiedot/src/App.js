@@ -16,9 +16,34 @@ Axios.get(`http://api.apixu.com/v1/current.json?key=47a729f6a11d4850982101236190
       <img src={saaTaul[0].current.condition.icon} alt="kuva"/>
       <p>wind: </p>
 
+ const saa = {}
+  
+
+
         */       
 const Country = (props) => {
   const maaObject = [...props.taulukko]
+  const [saa,setSaa] = useState({})
+  const [wait,setWait] = useState(false)
+  useEffect(() => {
+    Axios.get(`http://api.apixu.com/v1/current.json?key=47a729f6a11d4850982101236190604&q=${maaObject[0].name}?`).then(response => {
+      console.log('promise fulfilled Sää')
+      //console.log(response.data)
+      setSaa(response.data)
+      setWait(true)
+    })
+  },[])
+  console.log(saa)
+  let styles = {
+    width: "100px",
+    height: "50px"
+  }
+
+  let styles2 = {
+    width: "500px",
+    height: "250px"
+  }
+  if(wait){
     return (
       <>
         <h1>{maaObject[0].name}</h1>
@@ -30,15 +55,25 @@ const Country = (props) => {
             {maaObject[0].languages.map(kieli => <li key = {kieli.iso639_1}>{kieli.name}</li>)}
           </ul>
         </div>
-        <img src={maaObject[0].flag} alt="kuva"/>
+        <img src={maaObject[0].flag} alt="kuva" style={styles2}/>
+      <h1>Weather in Helsinki</h1>
+      <h4>temperature: {saa.current.temp_c} Celsius</h4>
+      <img src={saa.current.condition.icon} alt="kuva" style={styles}/>
+      <h4>wind: {saa.current.wind_kph} kph direction {saa.current.wind_dir}</h4>
       </>
     )
+  }else{
+    return <></>
+  }
+  
   }
 
 const App = () => {
   const [name, setName] = useState("");
   const [maat, setMaat] = useState([])
    
+
+
   console.log(maat)
   useEffect(() => {
     Connect
@@ -47,9 +82,12 @@ const App = () => {
         console.log('promise fulfilled')
         setMaat(objects)
       })
-      
+
   }, [])
+
   
+
+
   const setSearch = (event) => {
     console.log("tekstikentän teksti",name)
     setName(event.target.value)
