@@ -119,11 +119,11 @@ app.put('/api/persons/:id', (request, response, next) => {
 //toimii
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-  
+
   if (body.name === undefined) {
     return response.status(400).json({ error: 'content missing' })
   }
-  
+
 
   const person = new Person({
     name: body.name,
@@ -131,10 +131,10 @@ app.post('/api/persons', (request, response, next) => {
   })
 
   person.save().then(savedPerson => savedPerson.toJSON())
-  .then(savedAndFormatedPerson => {
-    response.json(savedAndFormatedPerson)
-  })
-  .catch(error => next(error))
+    .then(savedAndFormatedPerson => {
+      response.json(savedAndFormatedPerson)
+    })
+    .catch(error => next(error))
 })
 
 

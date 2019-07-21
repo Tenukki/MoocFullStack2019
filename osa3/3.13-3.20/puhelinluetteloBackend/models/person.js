@@ -13,8 +13,8 @@ mongoose.connect(url, { useNewUrlParser: true })
 })
   
 const personSchema = mongoose.Schema({
-    name: { type: String, unique: true, minlength: 3},
-    number: { type: String, unique: true  , minlength: 8}
+  name: { type: String, unique: true, minlength: 3},
+  number: { type: String, unique: true  , minlength: 8}
 })
 
 personSchema.plugin(uniqueValidator);
