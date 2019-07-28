@@ -1,6 +1,7 @@
 const blogsRouter = require('express').Router()
 const Blog = require("../models/blog")
 const User = require("../models/user")
+const jwt = require('jsonwebtoken')
 
 blogsRouter.get('/', async (request, response) => {
     //populate katsoo kenttää johon se linkkaa
@@ -10,6 +11,10 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response,next) => {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    if (!request.token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
     const r = await Blog.findById(request.params.id)
     console.log(r)
     if(!r){
@@ -43,12 +48,19 @@ blogsRouter.put('/:id', async (req,res,next) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  
     try {
-      const user = await User.findById(request.body.userId)
+      const decodedToken = jwt.verify(request.token, process.env.SECRET)
+      if (!request.token || !decodedToken.id) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+      }
+      
+      const user = await User.findById(decodedToken.id)
+
       if(!request.body.hasOwnProperty('url') && !request.body.hasOwnProperty('title')){
           response.status(400).end()
       }else{
+
+        //jos object ei sisällä kenttää likes
         if(!request.body.hasOwnProperty('likes')){
           console.log(request.body)
           let a = request.body
@@ -63,33 +75,34 @@ blogsRouter.post('/', async (request, response) => {
           const newBlog = new Blog(uusi)
           const savedblog = await newBlog.save()
 
-          user.blogs = user.blogs.concat(savedblog)
+          user.blogs = user.blogs.concat(savedblog._id)
           await user.save()
 
-          response.json(newBlog.toJSON())
-          }else{
-              console.log("hellou")
-              let a = request.body
-              let newObject = {
-                title: a.title,
-                author: a.author,
-                url: a.url,
-                likes: a.likes,
-                userId: user._id
-              }
-              const blog = new Blog(newObject)
-              const savedblog = await blog.save()
+          response.status(201).json(newBlog.toJSON()).end()
+        }else{
+            console.log("hellou")
+            let a = request.body
+            let newObject = {
+              title: a.title,
+              author: a.author,
+              url: a.url,
+              likes: a.likes,
+              userId: user._id
+            }
+            const blog = new Blog(newObject)
+            const savedblog = await blog.save()
 
-              user.blogs = user.blogs.concat(savedblog)
-              await user.save()
+            user.blogs = user.blogs.concat(savedblog._id)
+            await user.save()
 
-              response.json(savedblog.toJSON())
-          }
+            response.status(201).json(savedblog.toJSON()).end()
         }
+      }
     } catch (error) {
       
     }
   
 })
+
 
 module.exports = blogsRouter
