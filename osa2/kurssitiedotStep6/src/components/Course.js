@@ -11,7 +11,7 @@ const Header = (probs) =>{
 const Content = (probs) =>{
 
   const rivi = () => probs.osa.parts.map(asia =>
-    <Part nimi = {asia.name} maara = {asia.exercises}/>
+    <Part nimi = {asia.name} key={asia.name} maara = {asia.exercises}/>
   )
   return (
     <>
@@ -41,11 +41,11 @@ const Total = (probs) =>{
 const Course = ({ note }) => {
 
   const kurssi = note.map(elemnent =>
-      <>
+      <div key={elemnent.name}>
       <Header notes = {elemnent}/>
       <Content osa = {elemnent}/>
       <Total osa = {elemnent}/>
-      </>
+      </div>
     )
   return (
     <>
