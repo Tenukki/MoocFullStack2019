@@ -1,3 +1,5 @@
+import service from '../services/anecdotes'
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -18,26 +20,30 @@ const asObject = (anecdote) => {
 }
 
 export const voteAnecdote = (content) =>{
-  return {
-    type: "VOTE",
-    data: content
+  return async dispatch =>{
+    console.log("itä täällä on")
+    console.log(content.id)
+    const response = await service.vote(content.id)
+    dispatch({
+      type: "VOTE",
+      data: content
+    })
   }
 }
 
 export const addAnecdote = (content) =>{
-  return{
-    type: 'ADD',
-    data: {
-      content: content,
-      id: getId(),
-      votes: 0
-    }
+  return async dispatch =>{
+    const anec = await service.createNew(content)
+    dispatch({
+      type: 'ADD',
+      data: anec
+    })
   }
 }
 
 const initialState = anecdotesAtStart.map(anekdote => asObject(anekdote))
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
 
@@ -54,10 +60,23 @@ const reducer = (state = initialState, action) => {
         )
     case 'ADD':
         return state.concat(action.data)
+    case 'INIT_NOTES':
+      return action.data
     default:
       return state
   }
- 
+}
+
+
+
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anec = await service.getAll()
+    dispatch({
+      type: 'INIT_NOTES',
+      data: anec,
+    })
+  }
 }
 
 export default reducer

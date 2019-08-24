@@ -1,16 +1,36 @@
 import React from 'react'
+import { setMessageAction } from '../reducers/notificationReducer';
+import { connect } from 'react-redux'
 
-const Notification = () => {
+const Notification = ({notification}) => {
+  const word = notification
   const style = {
     border: 'solid',
     padding: 10,
     borderWidth: 1
   }
-  return (
-    <div style={style}>
-      render here notification...
-    </div>
-  )
+  if(word===""){
+    return (
+      <>
+      </>
+    )
+  }else{
+    return (
+      <div style={style}>
+        {word}
+      </div>
+    )
+  }
+  
 }
 
-export default Notification
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification,
+  }
+}
+
+
+export default connect(
+  mapStateToProps
+)(Notification)
